@@ -5,7 +5,7 @@ from pyrogram import filters
 from pyrogram import Client, filters
 from pyrogram.types import *
 import cloudscraper
-from Extractor import app
+from Extractor.client import app
 from datetime import datetime
 import pytz
 import logging

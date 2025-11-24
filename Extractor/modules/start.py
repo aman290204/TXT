@@ -9,7 +9,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pyrogram import filters, Client
 from pyrogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton, Message
 from pyrogram.enums import ParseMode
-from Extractor import app
+from Extractor.client import app
 from config import OWNER_ID, CHANNEL_ID
 from Extractor.core import script
 from Extractor.core.func import subscribe, chk_user

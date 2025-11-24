@@ -1,5 +1,5 @@
 
-from Extractor import app
+from Extractor.client import app
 from pyrogram import filters
 import json
 import time

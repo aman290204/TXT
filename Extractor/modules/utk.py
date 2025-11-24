@@ -6,7 +6,7 @@ from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
 from base64 import b64decode
 from pyrogram import filters
-from Extractor import app
+from Extractor.client import app
 from config import CHANNEL_ID, THUMB_URL
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from colorama import Fore, Style, init

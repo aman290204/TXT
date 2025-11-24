@@ -8,7 +8,7 @@ import io
 import aiohttp
 from pyrogram import Client, filters
 import os
-from Extractor import app
+from Extractor.client import app
 import cloudscraper
 import concurrent.futures
 import re
@@ -134,7 +134,7 @@ async def classplus_txt(app, message):
                             if response.status_code == 200:
                                 courses = response.json()["data"]["courses"]
                                 s.session_data = {"token": token, "courses": {course["id"]: course["name"] for course in courses}}
-                                await fetch_batches(app, message, org_name)
+                                await fetch_batches(app, message, org_name, org_code)
                             else:
                                 await message.reply("NO BATCH FOUND ")
 
@@ -213,7 +213,7 @@ async def classplus_txt(app, message):
                             if response.status_code == 200:
                                 courses = response.json()["data"]["courses"]
                                 s.session_data = {"token": token, "courses": {course["id"]: course["name"] for course in courses}}
-                                await fetch_batches(app, message, org_name)
+                                await fetch_batches(app, message, org_name, org_code)
                             
                             else:
                                 await message.reply("Failed to verify OTP. Please try again.")
@@ -262,7 +262,7 @@ async def classplus_txt(app, message):
                             if response.status_code == 200:
                                 courses = response.json()["data"]["courses"]
                                 s.session_data = {"token": token, "courses": {course["id"]: course["name"] for course in courses}}
-                                await fetch_batches(app, message, org_name)
+                                await fetch_batches(app, message, org_name, org_code)
                             else:
                                 await message.reply("NO BATCH FOUND ")
                         else:
@@ -293,6 +293,7 @@ async def classplus_txt(app, message):
             }
 
             org_name = None
+            org_code = None
 
             for course in courses:
                 shareable_link = course["shareableLink"]
@@ -300,6 +301,7 @@ async def classplus_txt(app, message):
                 if "courses.store" in shareable_link:
   
                     new_data = shareable_link.split('.')[0].split('//')[-1]
+                    org_code = new_data
                     org_response = s.get(f"https://api.classplusapp.com/v2/orgs/{new_data}", headers=headers)
         
                     if org_response.status_code == 200:
@@ -311,7 +313,7 @@ async def classplus_txt(app, message):
 
                 print(f"Org Name: {org_name}")
 
-            await fetch_batches(app, message, org_name)
+            await fetch_batches(app, message, org_name, org_code)
         else:
             await message.reply("Invalid token. Please try again.")
     else:
@@ -319,7 +321,7 @@ async def classplus_txt(app, message):
 
 
 
-async def fetch_batches(app, message, org_name):
+async def fetch_batches(app, message, org_name, org_code):
     session_data = s.session_data
     
     if "courses" in session_data:
@@ -353,7 +355,7 @@ async def fetch_batches(app, message, org_name):
                     "🔄 <b>Processing Course</b>\n"
                     f"└─ Current: <code>{selected_course_name}</code>"
                 )
-                await extract_batch(app, message, org_name, selected_course_id)
+                await extract_batch(app, message, org_name, selected_course_id, org_code)
             else:
                 await app.send_message(
                     message.chat.id,
@@ -375,7 +377,7 @@ async def fetch_batches(app, message, org_name):
         )
 
 
-async def extract_batch(app, message, org_name, batch_id):
+async def extract_batch(app, message, org_name, batch_id, org_code):
     session_data = s.session_data
     
     if "token" in session_data:
@@ -476,7 +478,13 @@ async def extract_batch(app, message, org_name, batch_id):
             invalid_chars = '\t:/+#|@*.'
             clean_name = ''.join(char for char in batch_name if char not in invalid_chars)
             clean_name = clean_name.replace('_', ' ')
-            file_path = f"{clean_name}.txt"
+            clean_name = clean_name.replace('_', ' ')
+            
+            if org_code:
+                clean_org_code = ''.join(char for char in org_code if char not in invalid_chars)
+                file_path = f"{clean_name} - {clean_org_code}.txt"
+            else:
+                file_path = f"{clean_name}.txt"
             
             with open(file_path, "w", encoding='utf-8') as file:
                 file.write(''.join(extracted_data))  
@@ -487,7 +495,10 @@ async def extract_batch(app, message, org_name, batch_id):
             fetch_live_videos(batch_id)
         )
 
-        extracted_data.extend(live_videos)
+        if not extracted_data:
+            await message.reply_text("❌ **No content found in this batch!**")
+            return
+
         file_path = await write_to_file(extracted_data)
 
         # Count different types of content
@@ -510,10 +521,14 @@ async def extract_batch(app, message, org_name, batch_id):
             f"<code>╾───• {BOT_TEXT} •───╼</code>"
         )
 
-        await app.send_document(message.chat.id, file_path, caption=caption)
-        await app.send_document(PREMIUM_LOGS, file_path, caption=caption)
-
-        os.remove(file_path)
+        try:
+            await app.send_document(message.chat.id, file_path, caption=caption)
+            await app.send_document(PREMIUM_LOGS, file_path, caption=caption)
+        except Exception as e:
+            await message.reply_text(f"❌ **Failed to send file:** `{str(e)}`")
+        finally:
+            if os.path.exists(file_path):
+                os.remove(file_path)
             
 
     

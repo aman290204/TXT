@@ -1,7 +1,7 @@
 import time
 import sys
 import motor
-from Extractor import app
+from Extractor.client import app
 from pyrogram import filters
 from config import OWNER_ID
 from Extractor.core.mongo.usersdb import get_users, add_user, get_user

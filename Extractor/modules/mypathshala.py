@@ -2,7 +2,7 @@ import asyncio
 import aiohttp
 import json
 from pyrogram import filters
-from Extractor import app
+from Extractor.client import app
 from config import PREMIUM_LOGS,BOT_TEXT
 from datetime import datetime
 import pytz

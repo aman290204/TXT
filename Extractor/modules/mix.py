@@ -6,7 +6,7 @@ from Crypto.Util.Padding import unpad
 from base64 import b64decode
 from pyrogram import filters
 import cloudscraper
-from Extractor import app
+from Extractor.client import app
 from config import PREMIUM_LOGS, join,BOT_TEXT
 import os
 import base64

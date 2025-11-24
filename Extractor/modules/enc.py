@@ -5,7 +5,7 @@ import asyncio
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
 from pyrogram import Client, filters
-from Extractor import app
+from Extractor.client import app
 from config import PREMIUM_LOGS
 import pytz
 from datetime import datetime

@@ -8,7 +8,7 @@ import logging
 from typing import List, Dict, Tuple, Any
 import aiohttp
 from concurrent.futures import ThreadPoolExecutor
-from Extractor import app
+from Extractor.client import app
 from config import  PREMIUM_LOGS
 from pyrogram import Client, filters, idle
 from pyrogram.types import Message

@@ -18,7 +18,5 @@ python-telegram-bot==20.6
 tqdm
 colorama
 termcolor
-dotenv
+python-dotenv
 flask
-pyrogram
-tgcrypto

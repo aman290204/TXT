@@ -10,7 +10,7 @@ from pyrogram import Client, filters
 from pyrogram.enums import ParseMode
 import os
 import requests
-from Extractor import app
+from Extractor.client import app
 from config import PREMIUM_LOGS, join, BOT_TEXT, THUMB_URL
 from datetime import datetime
 import pytz

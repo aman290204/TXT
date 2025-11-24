@@ -1,7 +1,7 @@
 from datetime import timedelta
 import pytz
 import datetime, time
-from Extractor import app
+from Extractor.client import app
 from config import  PREMIUM_LOGS, OWNER_ID
 from Extractor.core.func import get_seconds
 from Extractor.core.mongo import plans_db  

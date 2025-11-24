@@ -9,7 +9,7 @@ from pyrogram import Client
 from pyrogram import filters
 from pyrogram.types import Message
 from config import CHANNEL_ID, CHANNEL_ID2, THUMB_URL,BOT_TEXT
-from Extractor import app
+from Extractor.client import app
 from Extractor.core.utils import forward_to_log
 
 

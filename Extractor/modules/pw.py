@@ -7,7 +7,7 @@ import json, asyncio
 from config import PREMIUM_LOGS, join
 import subprocess
 import datetime
-from Extractor import app
+from Extractor.client import app
 from pyrogram import filters
 from subprocess import getstatusoutput
 from datetime import datetime

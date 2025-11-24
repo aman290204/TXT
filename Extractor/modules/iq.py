@@ -6,7 +6,7 @@ import os
 import server 
 from pyrogram import Client
 from pyrogram import filters
-from Extractor import app
+from Extractor.client import app
 from config import PREMIUM_LOGS, join
 from datetime import datetime
 import pytz

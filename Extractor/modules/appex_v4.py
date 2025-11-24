@@ -3,7 +3,7 @@ import threading
 import json
 import cloudscraper
 from pyrogram import filters
-from Extractor import app
+from Extractor.client import app
 import os
 import asyncio
 import aiohttp

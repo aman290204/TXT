@@ -1,7 +1,7 @@
 import aiohttp
 import asyncio
 import json
-from Extractor import app
+from Extractor.client import app
 from pyrogram import filters
 import requests
 from config import CHANNEL_ID
