@@ -3,7 +3,7 @@ import traceback
 from pyrogram import filters
 from pyrogram.errors import FloodWait, InputUserDeactivated, UserIsBlocked, PeerIdInvalid
 from config import OWNER_ID
-from Extractor.client import app
+from Extractor import app
 from Extractor.core.mongo.usersdb import get_users
 
 

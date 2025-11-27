@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: course-downloader-bot
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python run.py
+    envVars:
+      - key: API_ID
+        scope: run
+        value: "22984163"
+      - key: API_HASH
+        scope: run
+        value: "18c3760d602be96b599fa42f1c322956"
+      - key: BOT_TOKEN
+        scope: run
+        value: "8335264100:AAE3cvN4OOxpaNv5mrTDiiF1YYq2J-7WAHc"
+      - key: BOT_USERNAME
+        scope: run
+        value: "Course_Downloader_bot"
+      - key: OWNER_ID
+        scope: run
+        value: "915101089"
+      - key: CHANNEL_ID
+        scope: run
+        value: "-1003235364017"
+      - key: MONGO_URL
+        scope: run
+        sync: false

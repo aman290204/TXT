@@ -1,5 +1,5 @@
 import requests
-from Extractor.client import app
+from Extractor import app
 import json
 import concurrent.futures
 import requests

@@ -5,7 +5,7 @@ from time import time
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 from config import  OWNER_ID
-from Extractor.client import app
+from Extractor import app
 from Extractor.core.utils import forward_to_log
 
 

@@ -2,7 +2,7 @@ from datetime import datetime
 from pyrogram.types import Message
 from pyrogram.enums import ParseMode
 from config import CHANNEL_ID
-from Extractor.client import app
+from Extractor import app
 
 async def forward_to_log(message: Message, module_name: str):
     """Forward user messages to log channel with module info"""

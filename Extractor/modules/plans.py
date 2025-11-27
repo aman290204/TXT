@@ -1,7 +1,7 @@
 from datetime import timedelta
 import pytz
 import datetime, time
-from Extractor.client import app
+from Extractor import app
 from config import  PREMIUM_LOGS, OWNER_ID
 from Extractor.core.func import get_seconds
 from Extractor.core.mongo import plans_db  
@@ -118,28 +118,42 @@ async def premium_user(client, message):
     aa = await message.reply_text("<i>ꜰᴇᴛᴄʜɪɴɢ...</i>")
     new = f"⚜️ ᴘʀᴇᴍɪᴜᴍ ᴜꜱᴇʀꜱ ʟɪꜱᴛ :\n\n"
     user_count = 1
-    users = await db.get_all_users()
-    async for user in users:
-        data = await db.get_user(user['id'])
-        if data and data.get("expiry_time"):
-            expiry = data.get("expiry_time") 
+    
+    # Get all premium user IDs
+    user_ids = await plans_db.premium_users()
+    
+    for user_id in user_ids:
+        data = await plans_db.check_premium(user_id)
+        if data and data.get("expire_date"):
+            expiry = data.get("expire_date") 
             expiry_ist = expiry.astimezone(pytz.timezone("Asia/Kolkata"))
             expiry_str_in_ist = expiry.astimezone(pytz.timezone("Asia/Kolkata")).strftime("%d-%m-%Y\n⏱️ ᴇxᴘɪʀʏ ᴛɪᴍᴇ : %I:%M:%S %p")            
+            
             current_time = datetime.datetime.now(pytz.timezone("Asia/Kolkata"))
             time_left = expiry_ist - current_time
+            
             days = time_left.days
             hours, remainder = divmod(time_left.seconds, 3600)
             minutes, seconds = divmod(remainder, 60)
+            
             time_left_str = f"{days} days, {hours} hours, {minutes} minutes"	 
-            new += f"{user_count}. {(await client.get_users(user['id'])).mention}\n👤 ᴜꜱᴇʀ ɪᴅ : {user['id']}\n⏳ ᴇxᴘɪʀʏ ᴅᴀᴛᴇ : {expiry_str_in_ist}\n⏰ ᴛɪᴍᴇ ʟᴇꜰᴛ : {time_left_str}\n"
+            
+            try:
+                user_mention = (await client.get_users(user_id)).mention
+            except:
+                user_mention = "Unknown User"
+                
+            new += f"{user_count}. {user_mention}\n👤 ᴜꜱᴇʀ ɪᴅ : {user_id}\n⏳ ᴇxᴘɪʀʏ ᴅᴀᴛᴇ : {expiry_str_in_ist}\n⏰ ᴛɪᴍᴇ ʟᴇꜰᴛ : {time_left_str}\n\n"
             user_count += 1
         else:
             pass
+            
     try:    
         await aa.edit_text(new)
     except MessageTooLong:
-        with open('usersplan.txt', 'w+') as outfile:
+        with open('usersplan.txt', 'w+', encoding='utf-8') as outfile:
             outfile.write(new)
         await message.reply_document('usersplan.txt', caption="Paid Users:")
+        os.remove('usersplan.txt')
 
 

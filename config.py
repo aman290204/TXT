@@ -3,49 +3,34 @@ from os import getenv
 
 
 # ------------------------------------------------
-API_ID = int(os.environ.get("API_ID", "15964777"))
+API_ID = int(os.environ.get("API_ID", "22984163"))
 # ------------------------------------------------
-API_HASH = os.environ.get("API_HASH","ef448f85b780cdf26f8ffe390a5d8262")
+API_HASH = os.environ.get("API_HASH","18c3760d602be96b599fa42f1c322956")
 # ------------------------------------------------
-BOT_TOKEN = os.environ.get("BOT_TOKEN", "")
+BOT_TOKEN = os.environ.get("BOT_TOKEN", "8431570808:AAFDJOalsAuvjR2Nfu_X69p0xBasFrq3yHs")
 # ------------------------------------------------
-BOT_USERNAME = os.environ.get("BOT_USERNAME", "@@Downloaderapna10bot")
-BOT_TEXT = "Downloader 10"
+BOT_USERNAME = os.environ.get("BOT_USERNAME", "@Course_Downloader_bot")
+BOT_TEXT = "Educational Hub Extractor"
 # ------------------------------------------------
-OWNER_ID = int(os.environ.get("OWNER_ID", "944358553"))
+OWNER_ID = int(os.environ.get("OWNER_ID", "915101089"))
 # ------------------------------------------------
 # //LOG CHANNEL ID 
-CHANNEL_ID = int(os.environ.get("CHANNEL_ID", "-1002683859662"))
+CHANNEL_ID = int(os.environ.get("CHANNEL_ID", "-1003235364017"))
 
 # //FORCE_CHANNEL_ID
-CHANNEL_ID2 = int(os.environ.get("CHANNEL_ID2", "-1002471859014")) 
+CHANNEL_ID2 = int(os.environ.get("CHANNEL_ID2", "0")) if os.environ.get("CHANNEL_ID2") else None
 # ------------------------------------------------
-MONGO_URL = os.environ.get("MONGO_URL", "mongodb+srv://besib69802:YMOfgvnyjbRgW5qt@cluster0.yzzu2gn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+MONGO_URL = os.environ.get("MONGO_URL", "mongodb+srv://missioncfa8:FmHOfEe5Z9wLXOSu@cluster0.mswwysd.mongodb.net/?appName=Cluster0")
 # -----------------------------------------------
-PREMIUM_LOGS = int(os.environ.get("PREMIUM_LOGS", "-1002829170533"))
+PREMIUM_LOGS = int(os.environ.get("PREMIUM_LOGS", "0")) if os.environ.get("PREMIUM_LOGS") else None
 # -----------------------------------------------
-join = '<a href="https://t.me/+MgPgCAPUOVU2Yjhl">✳️ JOIN BACKUP</a>'
+join = '<a href="https://t.me/RPSC_UPSC_CURRENT">✳️ JOIN BACKUP</a>'
 # -----------------------------------------------
-UNSPLASH_ACCESS_KEY = 'RabDRmuXXBobanmwwbvpP5LwoG4J8ox34y5Sstz-9jk'
+UNSPLASH_ACCESS_KEY = os.environ.get('UNSPLASH_ACCESS_KEY', '')
 # -----------------------------------------------
-UNSPLASH_QUERY = 'animal baby'
+UNSPLASH_QUERY = os.environ.get('UNSPLASH_QUERY', 'educational')
 # -----------------------------------------------
-ADMIN_BOT_USERNAME = "UGxPRO" #without @
+ADMIN_BOT_USERNAME = os.environ.get("ADMIN_BOT_USERNAME", "") #without @
 
-THUMB_URL = os.environ.get("THUMB_URL", "https://josephscollege.ac.in/wp-content/uploads/2022/04/1.jpg")
-
-
-
-
-# # Bot configuration
-# API_ID = int(os.environ.get("API_ID", "22746239"))
-# API_HASH = os.environ.get("API_HASH", "a98ec8cfd8572a3a7c936cf828fe6215")
-# BOT_TOKEN = os.environ.get("BOT_TOKEN", "7547829346:AAGyfvOu47EciNhC7NUGSDEDFuBaetYYusw")
-# BOT_USERNAME = os.environ.get("BOT_USERNAME", "MassRPBot")
-# OWNER_ID = int(os.environ.get("OWNER_ID", "7463601722"))
-# SUDO_USERS = list(map(int, getenv("SUDO_USERS", "7463601722").split()))
-# CHANNEL_ID = int(os.environ.get("CHANNEL_ID", "-1002601604234"))
-# MONGO_URL = os.environ.get("MONGO_URL", "mongodb+srv://wadiro6523:08AwfhhKRdQaS1i6@cluster0.krzxuop.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
-# PREMIUM_LOGS = int(os.environ.get("PREMIUM_LOGS", "-1002601604234"))
-# THUMB_URL = os.environ.get("THUMB_URL", "https://i.fbcd.co/products/original/ug-circle-logo-design-2-e84695ca2ab9a697d2b2d7c928b0bf5f12bf18e076da241815e0372c8d617915.jpg")
+THUMB_URL = os.environ.get("THUMB_URL", "")
 

@@ -1,7 +1,7 @@
 from pyrogram import filters
 import json
 import os
-from Extractor.client import app
+from Extractor import app
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 import asyncio
 from Extractor.core.utils import forward_to_log
