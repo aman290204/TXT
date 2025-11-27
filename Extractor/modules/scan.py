@@ -4,6 +4,7 @@ import os
 import re
 import time
 import aiohttp
+import aiofiles
 from pyrogram import filters, Client
 from Extractor import app
 from config import PREMIUM_LOGS, BOT_TEXT
@@ -199,8 +200,8 @@ async def fetch_batch_content(session, batch_token, file_handle, folder_id=0, fo
                                 url_val = item.get("url") or thumbnail_url
                                 
                             if url_val:
-                                # Write directly to file
-                                file_handle.write(f"{folder_path}{name}:{url_val}\n")
+                                # Write directly to file (async)
+                                await file_handle.write(f"{folder_path}{name}:{url_val}\n")
                                 count += 1
                     
                     if tasks:
@@ -290,7 +291,7 @@ async def process_valid_org(client, message, org_code, token, org_name):
                         total_links = 0
                         try:
                             print(f"[DEBUG] Starting content fetch for {batch_name}...")
-                            with open(filename, "w", encoding="utf-8") as f:
+                            async with aiofiles.open(filename, "w", encoding="utf-8") as f:
                                 # Add timeout for content extraction (600 seconds max per batch)
                                 total_links = await asyncio.wait_for(
                                     fetch_batch_content(session, batch_token, f, folder_path=f"({batch_name})"),
