@@ -1,0 +1,80 @@
+name: RDP
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *"
+
+jobs:
+  secure-rdp:
+    runs-on: windows-latest
+    timeout-minutes: 3600
+
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure RDP
+        run: |
+          Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name "fDenyTSConnections" -Value 0 -Force
+          netsh advfirewall firewall add rule name="RDP" dir=in action=allow protocol=TCP localport=3389
+          Restart-Service TermService -Force
+
+      - name: Create RDP User
+        run: |
+          $Password = "Aman@123"
+          $Secure = ConvertTo-SecureString $Password -AsPlainText -Force
+
+          if (Get-LocalUser -Name "RDP" -ErrorAction SilentlyContinue) {
+            Remove-LocalUser -Name "RDP"
+          }
+
+          New-LocalUser RDP -Password $Secure -AccountNeverExpires
+          Add-LocalGroupMember Administrators RDP
+          Add-LocalGroupMember "Remote Desktop Users" RDP
+
+          echo "RDP_PASSWORD=$Password" >> $env:GITHUB_ENV
+
+      - name: Install Python 3.11 (NuGet method)
+        run: |
+          Write-Host "Installing Python 3.11 using NuGet..."
+
+          Invoke-WebRequest https://dist.nuget.org/win-x86-commandline/latest/nuget.exe -OutFile nuget.exe
+
+          .\nuget.exe install python -Version 3.11.0
+
+          $pythonDir = (Get-ChildItem -Directory | Where-Object { $_.Name -match "python.3.11" }).FullName
+          $pythonExe = "$pythonDir\tools\python.exe"
+
+          if (-Not (Test-Path $pythonExe)) {
+            Write-Error "Python 3.11 could NOT be installed!"
+            exit 1
+          }
+
+          echo "$pythonDir\tools" >> $env:GITHUB_PATH
+          echo "PYTHON_EXE=$pythonExe" >> $env:GITHUB_ENV
+
+      - name: Install Tailscale
+        run: |
+          $url = "https://pkgs.tailscale.com/stable/tailscale-setup-1.82.0-amd64.msi"
+          $path = "$env:TEMP\tailscale.msi"
+
+          Invoke-WebRequest $url -OutFile $path
+          Start-Process msiexec.exe -ArgumentList "/i `"$path`" /quiet /norestart" -Wait
+
+      - name: Connect Tailscale
+        run: |
+          & "$env:ProgramFiles\Tailscale\tailscale.exe" up --authkey=${{ secrets.TAILSCALE_AUTH_KEY }} --hostname=runner-$env:GITHUB_RUN_ID
+          $ip = & "$env:ProgramFiles\Tailscale\tailscale.exe" ip -4
+          echo "TAILSCALE_IP=$ip" >> $env:GITHUB_ENV
+
+      - name: Keep Alive
+        run: |
+          Write-Host "=== RDP ACCESS ==="
+          Write-Host "IP: $env:TAILSCALE_IP"
+          Write-Host "User: RDP"
+          Write-Host "Pass: $env:RDP_PASSWORD"
+          Write-Host "Bot logs: C:\Users\RDP\Downloads\Apna\bot.log"
+
+          while ($true) { Start-Sleep 300 }
